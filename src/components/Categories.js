@@ -121,7 +121,7 @@ const Categories = () => {
         }
       </ScrollView>
 
-      <FlatList data={apiData} renderItem={({item,index})=>renderItem(item,index)} />        
+      <FlatList data={apiData} renderItem={({item,index})=>renderItem(item,index)} nestedScrollEnabled={true}/>        
         
       </>
       

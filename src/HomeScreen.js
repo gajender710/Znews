@@ -17,7 +17,6 @@ const HomeScreen = ({navigation}) => {
       <Carousal/>
         <Text style={styles.topStory}>Top Stories for you</Text>
       <Categories/>
-      <Text style={{color:"red"}}>HomeScren</Text>
     </ScrollView>
     <TouchableNativeFeedback onPress={handleExplore}>
       <View style={styles.exploreInner}>

@@ -85,7 +85,7 @@ const Carousal = () => {
   return (
 
     <FlatList data={apiData} horizontal={true} renderItem={({item,index})=>renderItem(item,index)}
-     style={styles.list}  showsHorizontalScrollIndicator={false}/>        
+     style={styles.list}  showsHorizontalScrollIndicator={false} nestedScrollEnabled={true}/>        
         
   )
 }   
