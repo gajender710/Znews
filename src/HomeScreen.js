@@ -6,15 +6,20 @@ import Categories from './components/Categories'
 
 const HomeScreen = ({navigation}) => {
 
+  let headlineUrl =  'https://newsapi.org/v2/everything?' +
+  'q=Apple&' +
+  'from=2022-11-19&' +
+  'sortBy=popularity&' +
+  'apiKey=d7b2e1a83d6d403cbfbf10c370d07882';
+
   const handleExplore = () =>{
-    //console.log(navigation)
     navigation.navigate('Explore')
   }
 
   return (
     <>
     <ScrollView style={styles.container}>
-      <Carousal/>
+      <Carousal url ={headlineUrl} explore = {false} />
         <Text style={styles.topStory}>Top Stories for you</Text>
       <Categories/>
     </ScrollView>

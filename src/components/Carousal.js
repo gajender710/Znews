@@ -1,19 +1,16 @@
-import { View, Text, Image ,StyleSheet, FlatList, ImageBackground, TouchableNativeFeedback} from 'react-native'
+import { View, Text, Image ,StyleSheet, FlatList, ImageBackground, TouchableNativeFeedback, Dimensions} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 
-const Carousal = () => {
+const Carousal = (props) => {
 
     const [apiData , setApiData] = useState([]);
     const [Bookmarks,setBookmark] = useState([]);
 
     const fetchData = async() =>{
-        let url = 'https://newsapi.org/v2/everything?' +
-        'q=Apple&' +
-        'from=2022-11-19&' +
-        'sortBy=popularity&' +
-        'apiKey=d7b2e1a83d6d403cbfbf10c370d07882';
+        console.log(props.url+"!!!!!!!!")
+        let url = props.url
         let data = await fetch(url).then(res=>res.json()).then(d=>{
 
             let newData =  d.articles.map((d,index)=>{
@@ -48,25 +45,32 @@ const Carousal = () => {
     const handleBookmark = (item)=>{ 
         const newData = apiData.map((val,)=>{
             if(item.title == val.title){
-                console.log(item.title)
-                console.log(val.title)
                     return {...val,bookmark:!val.bookmark}  
             }
             else return val
         } )
-        console.log("click "+newData)
         setApiData(newData);        
+    }
+
+    const handleBack = () =>{
+        props.navigation.pop()
     }
 
     const renderItem = (item,index) => {
         return (
-            <ImageBackground source={{uri: `${item.urlToImage}`}} style={styles.bg} key={index}>
+            <ImageBackground source={{uri: `${item.urlToImage}`}} style={props.explore ? styles.bgExplore : styles.bgHome} key={index}>
             <View key={index} style={styles.content} >
 
-            <View style={{alignItems:'flex-end'}}>
+            <View style={{justifyContent:'space-between',flexDirection:'row'}}>
+                <View>
+                    {props.explore ? 
+                        <TouchableNativeFeedback onPress={handleBack} >
+                        <Icon  name="arrow-back" size={25}  style={{color:'#D0D0D0'}}/>
+                    </TouchableNativeFeedback> : null
+                    } 
+                </View>
                 <TouchableNativeFeedback onPress={()=>handleBookmark(item)}>
                     <Icon  name="bookmark" size={25}  style={{color: item.bookmark ? "#e56584" : '#D0D0D0'}}/>
-                    
                 </TouchableNativeFeedback> 
             </View>
             <View >
@@ -84,8 +88,8 @@ const Carousal = () => {
 
   return (
 
-    <FlatList data={apiData} horizontal={true} renderItem={({item,index})=>renderItem(item,index)}
-     style={styles.list}  showsHorizontalScrollIndicator={false} nestedScrollEnabled={true}/>        
+    <FlatList data={apiData} horizontal={!props.explore} renderItem={({item,index})=>renderItem(item,index)}
+     style= {!props.explore ? styles.list : styles.exloreList}  showsHorizontalScrollIndicator={false} nestedScrollEnabled={true}/>        
         
   )
 }   
@@ -96,12 +100,22 @@ export default Carousal
 const styles = StyleSheet.create({
     list:{
         marginLeft:10,
+        backgroundColor:'white',
     },
-    bg: {
+    exloreList:{
+        backgroundColor:'black',
+    },
+    bgHome: {
         height:290,
         width:220,
         borderRadius:15,
         marginHorizontal:4,   
+        overflow:'hidden', 
+    },
+    bgExplore: {
+        height:Dimensions.get('window').height,
+        width:Dimensions.get('window').width,
+        borderRadius:15,
         overflow:'hidden', 
     },
     content:{

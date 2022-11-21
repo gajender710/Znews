@@ -20,7 +20,6 @@ const Categories = () => {
         'apiKey=d7b2e1a83d6d403cbfbf10c370d07882';
         let data = await fetch(url).then(res=>res.json()).then(d=>{
 
-            console.log(d)    
             let newData =  d.articles.map((d,index)=>{
                 let newDate = new Date(d.publishedAt)
                 var curDate = new Date();
@@ -40,7 +39,6 @@ const Categories = () => {
                 return {...d,timeDelay:timeDelay,bookmark:false}
             })
             setApiData(newData)
-            console.log(apiData)
         })
 
         .catch((error)=>console.log(error))
@@ -54,13 +52,11 @@ const Categories = () => {
     const handleBookmark = (item)=>{ 
         const newData = apiData.map((val,)=>{
             if(item.title == val.title){
-                console.log(item.title)
-                console.log(val.title)
+            
                     return {...val,bookmark:!val.bookmark}  
             }
             else return val
         } )
-        console.log("click "+newData)
         setApiData(newData);        
     }
 
